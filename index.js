@@ -5,6 +5,9 @@ const port = 8000;
 const fs = require('fs');
 const path = require('path');
 
+//mongo
+const db = require('./config/mongoose');
+
 //use post req parser
 app.use(express.urlencoded({ extended: true }));
 

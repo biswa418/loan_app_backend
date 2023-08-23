@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { auditMiddleware } = require('../utils');
 
 const addressInformationSchema = new mongoose.Schema({
     address: String,
@@ -134,6 +135,9 @@ const couserSchema = new mongoose.Schema({
         remark: String,
     },
 });
+
+// attach the middleware to audit
+couserSchema.plugin(auditMiddleware);
 
 const Couser = mongoose.model('Couser', couserSchema);
 

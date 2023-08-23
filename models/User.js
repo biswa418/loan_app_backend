@@ -7,6 +7,7 @@ const addressInformationSchema = new mongoose.Schema({
     state: String,
     city: String,
     district: String,
+    _id: false
 });
 
 const aadhaarDetailsSchema = new mongoose.Schema({
@@ -23,6 +24,7 @@ const aadhaarDetailsSchema = new mongoose.Schema({
     father_name: String,
     documents: mongoose.Schema.Types.Mixed,
     aadhaar_mobile_matched: Boolean,
+    _id: false
 });
 
 const documentSchema = new mongoose.Schema({
@@ -38,6 +40,7 @@ const documentSchema = new mongoose.Schema({
     page: String,
     uploadedFrom: String,
     rejectionReason: String,
+    _id: false
 });
 
 const customerPhotoSchema = new mongoose.Schema({
@@ -53,6 +56,7 @@ const customerPhotoSchema = new mongoose.Schema({
     page: String,
     uploadedFrom: String,
     rejectionReason: String,
+    _id: false
 });
 
 const userSchema = new mongoose.Schema({
@@ -113,7 +117,7 @@ const userSchema = new mongoose.Schema({
     sms_verified: Boolean,
     creation_stage: String,
     onboarding_date: Date,
-    customer_id: { type: String, required: true },
+    customer_id: { type: String, required: true, unique: true },
     documents: {
         aadhaar_back: documentSchema,
         aadhaar_front: documentSchema,
@@ -126,7 +130,7 @@ const userSchema = new mongoose.Schema({
 });
 
 // attach the middleware to audit
-userSchema.plugin(auditMiddleware);
+userSchema.plugin(auditMiddleware.auditMiddleware);
 
 
 const User = mongoose.model('User', userSchema);

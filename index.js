@@ -9,6 +9,7 @@ const path = require('path');
 const db = require('./config/mongoose');
 
 //use post req parser
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //use express router to routes/

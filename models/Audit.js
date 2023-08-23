@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const auditSchema = new mongoose.Schema({
     timestamp: Date,
-    user: { type: mongoose.Schema.ObjectId, ref: 'User' },
+    user: { type: String, ref: 'User' },
     changes: mongoose.Schema.Types.Mixed,
 }, {
     timestamps: true

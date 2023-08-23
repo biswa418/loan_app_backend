@@ -5,8 +5,6 @@ function hash(string) {
     return JSum.digest(string, 'SHA256', 'hex');
 }
 
-// function stringify
-
 // Create a middleware for tracking changes
 module.exports.auditMiddleware = function (schema, options) {
     schema.pre('findOneAndUpdate', async function (next) {
@@ -42,10 +40,10 @@ module.exports.auditMiddleware = function (schema, options) {
         }
 
         if (changes.length === 0) {
-            next();
+            return;
         }
 
-        // Create an audit log entry
+        // Create an audit log entry if there's any changes
         const auditLog = new AuditLog({
             timestamp: new Date(),
             user: originalDoc.customer_id,

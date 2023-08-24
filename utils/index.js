@@ -47,6 +47,7 @@ module.exports.auditMiddleware = function (schema, options) {
         const auditLog = new AuditLog({
             timestamp: new Date(),
             user: originalDoc.customer_id,
+            updates: this.model.modelName,
             changes: changes,
         });
         await auditLog.save();

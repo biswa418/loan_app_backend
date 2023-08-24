@@ -9,4 +9,6 @@ router.post('/users/create', homeController.create);
 router.put('/users/update', homeController.update);
 router.delete('/user/:id', homeController.delete);
 
+router.use('/apps', require('./app'));
+
 module.exports = router;

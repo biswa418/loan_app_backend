@@ -7,6 +7,7 @@ const addressInformationSchema = new mongoose.Schema({
     state: String,
     city: String,
     district: String,
+    _id: false
 });
 
 const panDetailsSchema = new mongoose.Schema({
@@ -18,6 +19,7 @@ const panDetailsSchema = new mongoose.Schema({
     pan_aadhaar_linked: String,
     pan_aadhaar_matched: String,
     date_of_birth: String,
+    _id: false
 });
 
 const aadhaarDetailsSchema = new mongoose.Schema({
@@ -33,6 +35,7 @@ const aadhaarDetailsSchema = new mongoose.Schema({
     age_band: String,
     masked_mobile_number: String,
     aadhaar_mobile_matched: String,
+    _id: false
 });
 
 const documentSchema = new mongoose.Schema({
@@ -40,7 +43,7 @@ const documentSchema = new mongoose.Schema({
     category: String,
     fileLink: String,
     uploadStatus: Boolean,
-    uploadedDateMS: mongoose.Schema.Types.Mixed,
+    uploadedDateMS: String,
     error: String,
     isApproved: Boolean,
     meta_page_document: Boolean,
@@ -48,6 +51,7 @@ const documentSchema = new mongoose.Schema({
     page: String,
     uploadedFrom: String,
     rejectionReason: String,
+    _id: false
 });
 
 const customerPhotoSchema = new mongoose.Schema({
@@ -63,6 +67,7 @@ const customerPhotoSchema = new mongoose.Schema({
     page: String,
     uploadedFrom: String,
     rejectionReason: String,
+    _id: false
 });
 
 const creditEngineDetailsSchema = new mongoose.Schema({
@@ -81,6 +86,7 @@ const creditEngineDetailsSchema = new mongoose.Schema({
     information_extraction: String,
     mindistance_ownership_status: String,
     property_ownership_status: String,
+    _id: false
 });
 
 const couserSchema = new mongoose.Schema({

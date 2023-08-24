@@ -1,35 +1,46 @@
-const User = require('../models/User');
+const Application = require('../models/Application');
 
-// for home page
-module.exports.users = async (req, res) => {
-    const users = await User.find({}).sort({ '_id': -1 }).limit(5);
+
+module.exports.apps = async (req, res) => {
+    const apps = await Application.find({}).sort({ '_id': -1 }).limit(5);
 
     return res.status(200).json({
         success: true,
-        message: "Users fetched successfully.",
-        users
+        message: "Applications fetched successfully.",
+        apps
     });
 }
 
-//create new user
+//return exact application
+module.exports.app = async (req, res) => {
+    const app = await Application.find({ application_id: req.params.id });
+
+    return res.status(200).json({
+        success: true,
+        message: "Applications fetched successfully.",
+        app
+    });
+}
+
+//create new apps
 module.exports.create = async (req, res) => {
     try {
-        let user = await User.findOne({ customer_id: req.body.customer_id });
+        let app = await Application.findOne({ application_id: req.body.application_id });
 
-        if (user) {
+        if (app) {
             return res.status(400).json({
                 success: false,
-                message: "User already exists, try updating.",
-                userId: user.customer_id
+                message: "Application already exists, try updating.",
+                appId: app.application_id
             });
         }
 
-        user = await User.create(req.body);
+        app = await Application.create(req.body);
 
         return res.status(200).json({
             success: true,
-            message: "User created successfully",
-            userId: user
+            message: "Loan Application created successfully",
+            appId: app.application_id
         });
 
     } catch (err) {
@@ -46,21 +57,21 @@ module.exports.create = async (req, res) => {
 // update existing one
 module.exports.update = async (req, res) => {
     try {
-        let user = await User.findOne({ customer_id: req.body.customer_id });
+        let app = await Application.findOne({ application_id: req.body.application_id });
 
-        if (user) {
-            await User.findOneAndUpdate({ customer_id: user.customer_id }, req.body);
+        if (app) {
+            await Application.findOneAndUpdate({ application_id: app.application_id }, req.body);
 
             return res.status(200).json({
                 success: true,
-                message: "User updated successfully",
-                userId: user.customer_id
+                message: "Application updated successfully",
+                appId: app.application_id
             });
 
         } else {
             return res.status(400).json({
                 success: false,
-                message: "User doesn't exist.",
+                message: "Application doesn't exist.",
             });
         }
     } catch (err) {
@@ -79,20 +90,19 @@ module.exports.update = async (req, res) => {
 //delete if exists
 module.exports.delete = async (req, res) => {
     try {
-        let user = await User.findOneAndDelete({ customer_id: req.params.id });
+        let app = await Application.findOneAndDelete({ application_id: req.params.id });
 
-        if (user) {
+        if (app) {
             return res.status(200).json({
                 success: true,
-                message: "User deleted.",
-                user
+                message: "Application deleted.",
+                app
             });
         }
 
         return res.status(400).json({
             success: false,
-            message: "User could not be deleted.",
-            userId: user
+            message: "Application could not be deleted.",
         });
 
     } catch (err) {

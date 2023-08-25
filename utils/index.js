@@ -16,8 +16,9 @@ module.exports.auditMiddleware = function (schema, options) {
         const changes = [];
 
         for (const path in this.getUpdate()) {
-            if (path == '$set' || path == '$setOnInsert')
+            if (path == '$set' || path == '$setOnInsert') {
                 continue;
+            }
 
             if (originalDoc[path] === null) // $set value is undefined for ogDoc
                 originalDoc[path] = null;
@@ -30,7 +31,7 @@ module.exports.auditMiddleware = function (schema, options) {
             let newCheck = hash(JSON.stringify(this.getUpdate()[path], "", 2));
 
             if (newCheck !== ogCheck) {
-                console.log(path, originalDoc[path], this.getUpdate()[path], ogCheck, newCheck, ogCheck == newCheck);
+                console.log(path, originalDoc[path], this.getUpdate()[path], ogCheck == newCheck);
                 changes.push({
                     field: path,
                     oldValue: originalDoc[path],

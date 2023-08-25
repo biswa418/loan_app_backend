@@ -48,7 +48,7 @@ const customerPhotoSchema = new mongoose.Schema({
     category: String,
     fileLink: String,
     uploadStatus: Boolean,
-    uploadedDateMS: String,
+    uploadedDateMS: Number,
     error: String,
     isApproved: Boolean,
     meta_page_document: Boolean,

@@ -1,7 +1,7 @@
 const express = require('express');
 
 const router = express.Router();
-const couserController = require('../../../controllers/coUserController');
+const couserController = require('../../../controllers/couserController');
 
 
 router.get('/:id', couserController.getOne); // require application id

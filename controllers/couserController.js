@@ -1,16 +1,25 @@
 const Couser = require('../models/Couser');
+const User = require('../models/User');
 
 //create new cousers
 module.exports.create = async (req, res) => {
     try {
-        let cousers = await Couser.create(req.body);
+        let user = await User.findOne({ customer_id: req.body.customer_id });
 
-        return res.status(200).json({
-            success: true,
-            message: "Co-user created successfully",
-            couserId: cousers.customer_id
-        });
+        if (user) {
+            let cousers = await Couser.create(req.body);
 
+            return res.status(200).json({
+                success: true,
+                message: "Co-user created successfully",
+                couserId: cousers.customer_id
+            });
+        } else {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid user id.",
+            });
+        }
     } catch (err) {
         if (err) {
             res.status(500).json({

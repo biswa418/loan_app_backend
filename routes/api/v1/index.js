@@ -5,10 +5,13 @@ const homeController = require('../../../controllers/homeController');
 
 
 router.get('/home', homeController.users);
+router.get('/user/:id', homeController.user);
 router.post('/users/create', homeController.create);
 router.put('/users/update', homeController.update);
 router.delete('/user/:id', homeController.delete);
 
 router.use('/apps', require('./app'));
+
+router.get('/audits', homeController.audits);
 
 module.exports = router;

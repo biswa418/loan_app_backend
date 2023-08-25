@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Audit = require('../models/Audit');
 
 // for home page
 module.exports.users = async (req, res) => {
@@ -8,6 +9,17 @@ module.exports.users = async (req, res) => {
         success: true,
         message: "Users fetched successfully.",
         users
+    });
+}
+
+// for home page
+module.exports.user = async (req, res) => {
+    const user = await User.findOne({ customer_id: req.params.id });
+
+    return res.status(200).json({
+        success: true,
+        message: "User fetched successfully.",
+        user
     });
 }
 
@@ -34,6 +46,7 @@ module.exports.create = async (req, res) => {
 
     } catch (err) {
         if (err) {
+            console.log(err);
             res.status(500).json({
                 success: false,
                 message: "Something went wrong!",
@@ -105,3 +118,25 @@ module.exports.delete = async (req, res) => {
         }
     }
 }
+
+//get all audits
+module.exports.audits = async (req, res) => {
+    const audits = await Audit.find({});
+
+    return res.status(200).json({
+        success: true,
+        message: "Audits fetched successfully.",
+        audits
+    });
+}
+
+// find through appId
+module.exports.audit = async (req, res) => {
+    const audits = await Audit.find({ user: req.query.id });
+
+    return res.status(200).json({
+        success: true,
+        message: "Audits fetched successfully.",
+        audits
+    });
+} 

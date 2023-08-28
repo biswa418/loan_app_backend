@@ -11,7 +11,9 @@ router.put('/users/update', homeController.update);
 router.delete('/user/:id', homeController.delete);
 
 router.use('/apps', require('./app'));
+router.use('/couser', require('./couser'));
 
 router.get('/audits', homeController.audits);
+router.get('/audit/:id', homeController.audit);
 
 module.exports = router;

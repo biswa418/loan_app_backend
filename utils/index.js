@@ -5,17 +5,45 @@ function hash(string) {
     return JSum.digest(string, 'SHA256', 'hex');
 }
 
+// better one
+const compareObjects = (oldObj, newObj, parentField = '') => {
+    let changes = [];
+
+    for (const key in newObj) {
+        if (key == '$set' || key == '$setOnInsert') {
+            continue;
+        }
+
+        const fieldPath = parentField ? `${parentField} -> ${key}` : key;
+
+        if (typeof newObj[key] === 'object' && newObj[key] !== null && typeof oldObj[key] === 'object' && oldObj[key] !== null) {
+            const nestedChanges = compareObjects(oldObj[key], newObj[key], fieldPath);
+            changes.push(...nestedChanges);
+
+        } else if (newObj[key] !== oldObj[key]) {
+            changes.push({
+                field: fieldPath,
+                oldValue: oldObj[key],
+                newValue: newObj[key],
+            });
+        }
+    }
+
+    return changes;
+};
+
 // Create a middleware for tracking changes
 module.exports.auditMiddleware = function (schema, options) {
     schema.pre('findOneAndUpdate', async function (next) {
         // older doc
         const docToUpdate = await this.model.findOne(this.getQuery());
         const originalDoc = docToUpdate.toObject();
+        const updatedDoc = this.getUpdate();
 
         // Compare the original and updated documents to find changes
-        const changes = [];
+        let changes = [];
 
-        for (const path in this.getUpdate()) {
+        for (const path in updatedDoc) {
             if (path == '$set' || path == '$setOnInsert') {
                 continue;
             }
@@ -28,15 +56,19 @@ module.exports.auditMiddleware = function (schema, options) {
 
             //checksums
             let ogCheck = hash(JSON.stringify(originalDoc[path], "", 2));
-            let newCheck = hash(JSON.stringify(this.getUpdate()[path], "", 2));
+            let newCheck = hash(JSON.stringify(updatedDoc[path], "", 2));
 
             if (newCheck !== ogCheck) {
-                console.log(path, originalDoc[path], this.getUpdate()[path], ogCheck == newCheck);
-                changes.push({
-                    field: path,
-                    oldValue: originalDoc[path],
-                    newValue: this.getUpdate()[path],
-                });
+                console.log(path, originalDoc[path], updatedDoc[path]);
+                if (typeof updatedDoc[path] === 'object')
+                    changes = compareObjects(originalDoc[path], updatedDoc[path], path);
+                else {
+                    changes.push({
+                        field: path,
+                        oldValue: originalDoc[path],
+                        newValue: updatedDoc[path],
+                    });
+                }
             }
         }
 

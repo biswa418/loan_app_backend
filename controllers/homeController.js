@@ -14,13 +14,33 @@ module.exports.users = async (req, res) => {
 
 // for home page
 module.exports.user = async (req, res) => {
-    const user = await User.findOne({ customer_id: req.params.id });
+    try {
+        const user = await User.findOne({ customer_id: req.params.id });
 
-    return res.status(200).json({
-        success: true,
-        message: "User fetched successfully.",
-        user
-    });
+        if (user) {
+            return res.status(200).json({
+                success: true,
+                message: "User fetched successfully.",
+                user
+            });
+        } else {
+            return res.status(400).json({
+                success: true,
+                message: "User doesn't exist.",
+                user: null
+            });
+        }
+    } catch (err) {
+        if (err) {
+            console.log(err);
+            res.status(500).json({
+                success: false,
+                message: "Something went wrong!",
+                error: err
+            })
+        }
+    }
+
 }
 
 //create new user
@@ -132,7 +152,7 @@ module.exports.audits = async (req, res) => {
 
 // find through appId
 module.exports.audit = async (req, res) => {
-    const audits = await Audit.find({ user: req.query.id });
+    const audits = await Audit.find({ user: req.params.id });
 
     return res.status(200).json({
         success: true,

@@ -86,15 +86,17 @@ const physicalNachSchema = new mongoose.Schema({
         service_provider_name: String,
         service_provider_utility_code: String
     },
-    _id: false
-}, { timestamps: true });
+    _id: false,
+    updateAt: Date,
+    createdAt: Date
+});
 
 const otherOwnerSchema = new mongoose.Schema({
     name: String,
     category: String,
     fileLink: String,
     uploadStatus: Boolean,
-    uploadedDateMS: { Number },
+    uploadedDateMS: mongoose.Schema.Types.Long,
     error: String,
     isApproved: Boolean,
     meta_page_document: Boolean,
@@ -110,7 +112,7 @@ const chequeSchema = new mongoose.Schema({
     category: String,
     fileLink: String,
     uploadStatus: Boolean,
-    uploadedDateMS: { Number },
+    uploadedDateMS: mongoose.Schema.Types.Long,
     error: String,
     isApproved: Boolean,
     meta_page_document: Boolean,
@@ -128,7 +130,7 @@ const customerSchema = new mongoose.Schema({
     category: String,
     fileLink: String,
     uploadStatus: Boolean,
-    uploadedDateMS: { Number },
+    uploadedDateMS: mongoose.Schema.Types.Long,
     error: String,
     isApproved: Boolean,
     meta_page_document: Boolean,
@@ -224,7 +226,7 @@ const otherDetailsSchema = new mongoose.Schema({
         earning_members: Number,
         amount_earned: Number
     },
-    field_investiagation_dateMS: { Date },
+    field_investiagation_dateMS: mongoose.Schema.Types.Long,
     references: [referenceSchema],
     remarks: String,
     vehicle_chasis_no: String,
@@ -239,6 +241,16 @@ const esignSchema = new mongoose.Schema({
     _id: false
 })
 
+const physicalNaSchema = new mongoose.Schema({
+    created: Boolean,
+    generatedForm: Boolean,
+    approved: Boolean,
+    uploaded: Boolean,
+    _id: false,
+    createdAt: Date,
+    updatedAt: Date
+});
+
 const appSchema = new mongoose.Schema({
     agent_code: String,
     customer_id: String,
@@ -246,7 +258,7 @@ const appSchema = new mongoose.Schema({
     anchor_id: String,
     nbfc_loan_id: String,
     oem_id: String,
-    application_start: Date,
+    application_start_date: Date,
     business_id: String,
     bank_details_id: String,
     linked_banks: [String],
@@ -273,7 +285,7 @@ const appSchema = new mongoose.Schema({
     total_repayment: Number,
     gst_amount: Number,
     is_disbursed: Boolean,
-    disbursed_date: { Date },
+    disbursed_date: Date,
     rejection_date: Date,
     tenure_type: String,
     gps_charges: Number,
@@ -288,7 +300,7 @@ const appSchema = new mongoose.Schema({
     monthly_interest_rate: Number,
     annual_interest_rate: Number,
     embifi_approval_details: {
-        status: String,
+        status: Boolean,
         remark: String,
         embifi_user: String
     },
@@ -297,7 +309,7 @@ const appSchema = new mongoose.Schema({
         remark: String,
         nbfc_user: String,
         send_to_nbfc: Boolean,
-        send_dateMS: { Number }
+        send_dateMS: mongoose.Schema.Types.Long
     },
     credit_engine: creditEngineSchema,
     is_nearest_property_owned: String,
@@ -306,7 +318,7 @@ const appSchema = new mongoose.Schema({
     master_state: String,
     credit_pull: {
         consent: String,
-        consent_date: { Date },
+        consent_date: Date,
         credit_data: {
             crif_score: String,
         },
@@ -316,16 +328,11 @@ const appSchema = new mongoose.Schema({
             encryptedData: String
         },
         crif_stage: String,
-        next_runtimeMS: Number
+        next_runtimeMS: mongoose.Schema.Types.Long
     },
     loan_agreement_status: Boolean,
     loan_status: String,
-    physical_nach_status: {
-        created: Boolean,
-        generatedForm: Boolean,
-        approved: Boolean,
-        uploaded: Boolean,
-    },
+    physical_nach_status: physicalNaSchema,
     enach_status: String,
     upi_autopay_data: String,
     upi_autopay_status: String,

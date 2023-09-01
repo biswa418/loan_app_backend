@@ -48,8 +48,8 @@ module.exports.auditMiddleware = function (schema, options) {
                 continue;
             }
 
-            if (originalDoc[path] === null) // $set value is undefined for ogDoc
-                originalDoc[path] = null;
+            // if (originalDoc[path] === null) // $set value is undefined for ogDoc
+            //     originalDoc[path] = null;
 
             if (originalDoc[path] === undefined) // $set value is undefined for ogDoc
                 originalDoc[path] = null;
